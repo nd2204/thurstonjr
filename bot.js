@@ -12,19 +12,19 @@ const client = new Client({
   ]
 });
 
-const channel = client.channels.cache.get('858900068203364404');
-// const channel = client.channels.cache.get('1100414447908032553');
-const goodnight = new CronJob('00 23 * * *', () => {
+// const channel = client.channels.cache.get('858900068203364404');
+const goodnight = new CronJob('41 23 * * *', () => {
+  const channel = client.channels.cache.get('1100414447908032553');
   channel.send('Good Night! @everyone');
 });
 
 const goodmorning = new CronJob('30 06 * * *', () => {
+  const channel = client.channels.cache.get('1100414447908032553');
   channel.send('Good Morning! @everyone');
 });
 
 goodmorning.start();
 goodnight.start();
-
 
 // Create a new client instance
 
