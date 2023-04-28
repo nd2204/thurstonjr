@@ -1,0 +1,34 @@
+import { Client,  GatewayIntentBits } from 'discord.js';
+import { config } from 'dotenv'; config();
+import cron from 'node-cron';
+const client = new Client({ 
+  intents: [ GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds ]
+});
+
+const channels = {
+  morning: '1100414447908032553',
+  night: '1100414447908032553'
+};
+
+const greeting = [
+  {
+    schedule: '30 6 * * *',
+    message: 'Good morning, @everyone!',
+    channelId: channels.morning
+  },
+  {
+    schedule: '00 22 * * *',
+    message: 'Good night, @everyone!',
+    channelId: channels.night
+  }
+];
+
+export async function scheduledGreet() {
+  await client.login(process.env.TOKEN)
+  greeting.forEach(job => {
+    cron.schedule(job.schedule, () => {
+      const channel = client.channels.cache.get(job.channelId);
+      channel.send(job.message);
+    }).start();
+  });
+}

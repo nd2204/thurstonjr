@@ -1,3 +1,4 @@
+import { SlashCommandBuilder } from 'discord.js';
 import { config } from 'dotenv'; config();
 
 import { Configuration, OpenAIApi } from "openai";
@@ -18,3 +19,24 @@ export async function AIResponse(question) {
   });
   return completion.data.choices[0].message.content
 }
+
+const askai = new SlashCommandBuilder()
+.setName('askai')
+.setDescription('return answer as an AI model')
+.addStringOption((option) => option
+  .setName('prompt')
+  .setDescription('Type your question/prompt')
+  .setRequired(true)
+  .setChoices(
+    {
+      name: 'dadjoke',
+      value: 'Generate a random dad joke'
+    },
+    {
+      name: 'quote',
+      value: 'Generate a random inspiring quote',
+    },
+  )
+);
+
+export default askai.toJSON()
