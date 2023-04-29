@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 import { config } from 'dotenv'; config();
 import { Client, GatewayIntentBits } from 'discord.js';
-import { scheduledGreet } from './commands/greet.js'
+import greet from './commands/greet.js'
 import { commandRegister } from './commands/register.js';
 import askai from './commands/utils/askai.js';
 // Create a new client instance
@@ -24,9 +24,8 @@ let PREFIX = '!';
 // Run this code once when the client is ready
 client.once('ready', client => {
   console.log(`Ready! Logged in as ${client.user.tag}`); 
-  scheduledGreet();
-  // const channel = client.channels.cache.get(CHANNEL_ID);
-  // channel.send(`Hello world, ${client.user.username} is back on duty!`);
+  greet.scheduledGreet();
+  greet.onWakeup(client, CHANNEL_ID);
 });
 
 // Messages event listener

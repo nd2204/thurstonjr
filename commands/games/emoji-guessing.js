@@ -9,7 +9,6 @@ const emojiGuessing = {
     .setName('question')
     .setDescription('Type out your question for other to guess')
     .setRequired(true)
-    .setVisible(false)
   ),
   handler: async (interaction) => {
     if (interaction.commandName == emojiGuessing.data.name) {

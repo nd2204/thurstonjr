@@ -23,12 +23,20 @@ const greeting = [
   }
 ];
 
-export async function scheduledGreet() {
-  await client.login(process.env.TOKEN)
-  greeting.forEach(job => {
-    cron.schedule(job.schedule, () => {
-      const channel = client.channels.cache.get(job.channelId);
-      channel.send(job.message);
-    }).start();
-  });
+const greet = {
+  scheduledGreet: async () => {
+    await client.login(process.env.TOKEN)
+    greeting.forEach(job => {
+      cron.schedule(job.schedule, () => {
+        const channel = client.channels.cache.get(job.channelId);
+        channel.send(job.message);
+      }).start();
+    });
+  },
+  onWakeup: (client, ChannelID) => {
+    const channel = client.channels.cache.get(ChannelID);
+    channel.send(`Hello world, ${client.user.username} is back on duty!`);
+  }
 }
+
+export default greet
