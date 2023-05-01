@@ -33,7 +33,7 @@ const greet = {
       }).start();
     });
   },
-  onWakeup: (client, ChannelID) => {
+  handler: (client, ChannelID) => {
     const channel = client.channels.cache.get(ChannelID);
     channel.send(`Hello world, ${client.user.username} is back on duty!`);
   }

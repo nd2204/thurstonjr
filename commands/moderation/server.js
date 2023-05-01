@@ -1,8 +1,14 @@
 import { SlashCommandBuilder } from 'discord.js';
 
-export const data = new SlashCommandBuilder()
+const server = {
+  data: new SlashCommandBuilder()
   .setName('server')
-  .setDescription('Thong tin cua server.');
-export async function execute(interaction) {
-  await interaction.reply(`Server nay ten la: ${interaction.guild.name}, Co ${interaction.guild.memberCount} thanh vien`);
+  .setDescription('Thong tin cua server.'),
+  handler: async (interaction) => {
+    if (interaction.commandName === server.data.name) {
+      await interaction.reply(`This server name is: ${interaction.guild.name}, There are ${interaction.guild.memberCount} member`);
+    }
+  }
 }
+
+export default server

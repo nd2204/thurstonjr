@@ -16,7 +16,8 @@ const client = new Client({
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID
-const CHANNEL_ID = '858900068203364404'
+// const CHANNEL_ID = '858900068203364404'
+const CHANNEL_ID = '1100414447908032553'
 client.login(TOKEN);
 
 let PREFIX = '!';
@@ -25,7 +26,7 @@ let PREFIX = '!';
 client.once('ready', client => {
   console.log(`Ready! Logged in as ${client.user.tag}`); 
   greet.scheduledGreet();
-  greet.onWakeup(client, CHANNEL_ID);
+  greet.handler(client, CHANNEL_ID);
 });
 
 // Messages event listener
@@ -53,10 +54,14 @@ commandRegister();
 // Interaction event listener
 
 import emojiGuessing from './commands/games/emoji-guessing.js';
+import user from './commands/moderation/user.js';
+import server from './commands/moderation/server.js';
 
 client.on('interactionCreate', async interact => {
   if (!interact.isChatInputCommand()) return;
   // console.log(interact);
-  askai.handler(interact)
-  emojiGuessing.handler(interact)
+  askai.handler(interact);
+  emojiGuessing.handler(interact);
+  user.handler(interact);
+  server.handler(interact);
 })

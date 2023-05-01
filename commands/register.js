@@ -6,9 +6,16 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 // commands requisite
 import askai from './utils/askai.js'
 import emojiGuessing from './games/emoji-guessing.js';
+import server from './moderation/server.js';
+import user from './moderation/user.js';
 
 export async function commandRegister() {
-  const commands = [ askai.data.toJSON(), emojiGuessing.data.toJSON() ]
+  const commands = [ 
+    askai.data.toJSON(), 
+    emojiGuessing.data.toJSON(),
+    server.data.toJSON(),
+    user.data.toJSON(),
+  ]
   try {
     console.log('Started refreshing application (/) commands.');
 
