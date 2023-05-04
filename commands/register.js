@@ -10,8 +10,8 @@ import server from './moderation/server.js';
 import user from './moderation/user.js';
 
 export async function commandRegister() {
-  const commands = [ 
-    askai.data.toJSON(), 
+  const commands = [
+    askai.data.toJSON(),
     emojiGuessing.data.toJSON(),
     server.data.toJSON(),
     user.data.toJSON(),
