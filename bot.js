@@ -34,7 +34,13 @@ client.once('ready', client => {
 // Messages event listener
 client.on('messageCreate', async msg => {
   if (msg.content.includes('thurston') && msg.author.id !== CLIENT_ID ) {
-    await msg.reply(`Hey ${msg.author.username}!`);
+    if (msg.author.id === MY_ID) {
+      await msg.reply('Hi Creator!')
+    } else if (msg.author.id === msg.guild.ownerId) {
+      await msg.reply('Hello server\'s owner!')
+    } else {
+      await msg.reply(`Hey ${msg.author.username}!`);
+    }
   }
   let isMentioned = msg.mentions.has(CLIENT_ID) && !msg.mentions.everyone;
 
@@ -49,19 +55,20 @@ client.on('messageCreate', async msg => {
     await msg.reply('Shutting down ...');
     process.exit(0);
   }
-  
+
   if (msg.content.includes(`${PREFIX}todo`) && msg.author.id === MY_ID) {
     const todoFile = 'TODO.md'
-    // const content = msg.content
-    const content = msg.content.replace(`${PREFIX}todo`, `\n[ ${msg.createdAt} ]`)
-    fs.appendFile( todoFile, content, err => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(`Added a todo to ${todoFile}`)
-    })
-    await msg.reply('TODO added');
+    const dayFormat = msg.createdAt.getDate() + '-' + msg.createdAt.getMonth() + '-' + msg.createdAt.getFullYear()
+    const timeFormat = msg.createdAt.getHours() + ':' + (msg.createdAt.getMinutes() < 10 ? '0':'')
+    const content = msg.content.replace(`${PREFIX}todo`, `\n[ ${dayFormat} at ${timeFormat} ]`)
+
+    if (msg.content === `${PREFIX}todo show`) {
+      let readContent = fs.readFileSync(todoFile, 'utf-8');
+      await msg.reply(readContent);
+    } else {
+      fs.appendFile( todoFile, content, err => { if (err) throw err; })
+      await msg.reply('TODO added');
+    }
   }
 });
 
@@ -72,10 +79,11 @@ commandRegister();
 import emojiGuessing from './commands/games/emoji-guessing.js';
 import user from './commands/moderation/user.js';
 import server from './commands/moderation/server.js';
+import { throws } from 'assert';
 
 client.on('interactionCreate', async interact => {
   if (!interact.isChatInputCommand()) return;
-  // console.log(interact);
+  // console.log(interact.member.roles.highest.name);
   askai.handler(interact);
   emojiGuessing.handler(interact);
   user.handler(interact);

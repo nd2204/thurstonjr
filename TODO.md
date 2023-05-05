@@ -1,1 +1,3 @@
-[ Thu May 04 2023 10:59:34 GMT+0700 (Indochina Time) ] helloo
+[ 5-4-2023 at 11:1 ] Add role to whoami slash
+
+[ 5-4-2023 at 11:16 ] add
