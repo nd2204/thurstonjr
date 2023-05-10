@@ -48,7 +48,8 @@ client.on('messageCreate', async msg => {
     const question = msg.content.replace(`<@${CLIENT_ID}>`, '');
     // console.log(question);
     const answer = await askai.AIResponse(question)
-    await msg.reply(answer);
+    const embed = askai.RespondEmbed( question , answer, msg.author.avatarURL())
+    await msg.reply({ embeds: [embed] });
   }
 
   if (msg.content === `${PREFIX}shutdown` && msg.author.id === MY_ID) {
@@ -59,7 +60,7 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes(`${PREFIX}todo`) && msg.author.id === MY_ID) {
     const todoFile = 'TODO.md'
     const dayFormat = msg.createdAt.getDate() + '-' + msg.createdAt.getMonth() + '-' + msg.createdAt.getFullYear()
-    const timeFormat = msg.createdAt.getHours() + ':' + (msg.createdAt.getMinutes() < 10 ? '0':'')
+    const timeFormat = msg.createdAt.getHours() + ':' + (msg.createdAt.getMinutes() < 10 ? '0':'') + msg.createdAt.getMinutes()
     const content = msg.content.replace(`${PREFIX}todo`, `\n[ ${dayFormat} at ${timeFormat} ]`)
 
     if (msg.content === `${PREFIX}todo show`) {
@@ -79,7 +80,6 @@ commandRegister();
 import emojiGuessing from './commands/games/emoji-guessing.js';
 import user from './commands/moderation/user.js';
 import server from './commands/moderation/server.js';
-import { throws } from 'assert';
 
 client.on('interactionCreate', async interact => {
   if (!interact.isChatInputCommand()) return;
@@ -88,5 +88,6 @@ client.on('interactionCreate', async interact => {
   emojiGuessing.handler(interact);
   user.handler(interact);
   server.handler(interact);
+  interact.guild.fetchOwner().then(owner => console.log(owner.displayName));
 })
 
