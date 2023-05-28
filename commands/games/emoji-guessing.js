@@ -1,6 +1,8 @@
 import { SlashCommandBuilder } from 'discord.js'
 import askai from '../utils/askai.js'
 
+let player = [];
+
 const emojiGuessing = {
   data: new SlashCommandBuilder()
   .setName('emojiguessing')
@@ -14,9 +16,20 @@ const emojiGuessing = {
     if (interaction.commandName == emojiGuessing.data.name) {
       await interaction.reply('Chuan bi ...');
       const question = interaction.options.getString('question');
-      const answer = await askai.AIResponse(`create a emojis for this question: ${question}`)
+      const answer = await askai.AIResponseStd(`create a emojis for this question: ${question}`)
       await interaction.editReply(answer);
     }
+  }
+}
+
+class Player {
+  constructor(name) {
+    this._name = name;
+    this.point = 0
+  }
+
+  addPoint(amount) {
+    this.point += amount;
   }
 }
 

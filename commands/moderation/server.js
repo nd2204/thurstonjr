@@ -9,18 +9,16 @@ const server = {
 
     const embed = new EmbedBuilder()
     .setColor(0xb8bb26)
-    .setAuthor( {name: `${interaction.guild.name}`, iconURL: `${interaction.guild.iconURL()}`} )
+    .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+    .setThumbnail(interaction.guild.iconURL())
     .addFields(
-      { name: 'Server information:', value: 
-        `Current server owner - <@${interaction.guild.ownerId}>\n` +
-        `Member - ${interaction.guild.memberCount} \n`
-      }
+      { name: `Server owner`, value: `<@${interaction.guild.ownerId}>\n` },
+      { name: `Member count`, value: `\`${interaction.guild.memberCount} members\`` },
     )
     .setTimestamp();
 
     if (interaction.commandName === server.data.name) {
       await interaction.reply({ embeds: [embed] });
-      console.log(interaction)
     }
   }
 }

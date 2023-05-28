@@ -1,2 +1,4 @@
-[ 5-4-2023 at 11:1 ] Add role to whoami slash
-[ 6-4-2023 at 20:0 ] Thêm embeds để cải thiện giao diện của câu trả lời của bot
+- [x] ( 5-4-2023 ) ~~Add role to whoami slash~~
+- [x] ( 6-4-2023 ) ~~Thêm embeds để cải thiện giao diện của câu trả lời của bot~~
+- [ ] ( 10-4-2023 ) add some minigame
+- [ ] ( 11-4-2023 ) add- [ ] ( 11-4-2023 ) add

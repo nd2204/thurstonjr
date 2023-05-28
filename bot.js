@@ -1,10 +1,10 @@
-// Require the necessary discord.js classes
+// Require the necessary classes
 import { config } from 'dotenv'; config();
 import { Client, GatewayIntentBits } from 'discord.js';
 import greet from './commands/greet.js'
-import { commandRegister } from './commands/register.js';
 import askai from './commands/utils/askai.js';
 import fs from 'fs'
+import { EmbedBuilder } from '@discordjs/builders';
 // Create a new client instance
 const client = new Client({
   intents: [
@@ -18,8 +18,8 @@ const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID
 const MY_ID = '453195118871314442'
-// const CHANNEL_ID = '858900068203364404'
-const CHANNEL_ID = '1100414447908032553'
+const CHANNEL_ID = '858900068203364404'
+// const CHANNEL_ID = '1100414447908032553'
 client.login(TOKEN);
 
 let PREFIX = '!';
@@ -60,20 +60,23 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes(`${PREFIX}todo`) && msg.author.id === MY_ID) {
     const todoFile = 'TODO.md'
     const dayFormat = msg.createdAt.getDate() + '-' + msg.createdAt.getMonth() + '-' + msg.createdAt.getFullYear()
-    const timeFormat = msg.createdAt.getHours() + ':' + (msg.createdAt.getMinutes() < 10 ? '0':'') + msg.createdAt.getMinutes()
-    const content = msg.content.replace(`${PREFIX}todo`, `\n[ ${dayFormat} at ${timeFormat} ]`)
+    const content = msg.content.replace(`${PREFIX}todo`, `- [ ] ( ${dayFormat} )`)
+
 
     if (msg.content === `${PREFIX}todo show`) {
       let readContent = fs.readFileSync(todoFile, 'utf-8');
-      await msg.reply(readContent);
+      let embed = new EmbedBuilder().setColor(0x282828).setDescription('```md\n' + `${readContent}` + '\n```');
+      await msg.reply({ embeds: [embed] });
     } else {
       fs.appendFile( todoFile, content, err => { if (err) throw err; })
-      await msg.reply('TODO added');
+      let embed = new EmbedBuilder().setColor(0x282828).setDescription(`Todo added!`);
+      await msg.reply({ embeds: [embed] });
     }
   }
 });
 
 // Register command to the discord server
+import { commandRegister } from './commands/register.js';
 commandRegister();
 // Interaction event listener
 
@@ -83,11 +86,9 @@ import server from './commands/moderation/server.js';
 
 client.on('interactionCreate', async interact => {
   if (!interact.isChatInputCommand()) return;
-  // console.log(interact.member.roles.highest.name);
   askai.handler(interact);
   emojiGuessing.handler(interact);
   user.handler(interact);
   server.handler(interact);
-  interact.guild.fetchOwner().then(owner => console.log(owner.displayName));
 })
 

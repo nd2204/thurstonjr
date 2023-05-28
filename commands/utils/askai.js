@@ -13,22 +13,22 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const waitEmbed = new EmbedBuilder()
-.setColor(0x1d2021)
+.setColor(0x282828)
 .setDescription('Doi chut  . . .')
 
 const askai = {
   data: new SlashCommandBuilder()
   .setName('askai')
   .setDescription('return answer as an AI model')
-  .addBooleanOption((option) => option
-    .setName('hidden')
-    .setDescription('Chi hien thi tin nhan cho ban than')
-    .setRequired(true)
-  )
   .addStringOption((option) => option
     .setName('prompt')
     .setDescription('Type your question/prompt')
     .setRequired(true)
+  )
+  .addBooleanOption((option) => option
+    .setName('hidden')
+    .setDescription('Chi hien thi tin nhan cho ban than')
+    .setRequired(false)
   ),
   handler: async (interaction) => {
     if (interaction.commandName === askai.data.name) {
@@ -46,7 +46,24 @@ const askai = {
   AIResponse: async (question) => {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{role: "user", content: question}],
+      messages: [{
+        role: "user",
+        content: 
+          'output your answer in vietnamese (not just translating it):' +
+          question,
+      }],
+      max_tokens: 350,
+    });
+    return completion.data.choices[0].message.content
+  },
+  AIResponseStd: async (question) => {
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{
+        role: "user",
+        content: 
+          question,
+      }],
       max_tokens: 350,
     });
     return completion.data.choices[0].message.content

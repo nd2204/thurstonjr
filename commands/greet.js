@@ -6,8 +6,8 @@ const client = new Client({
 });
 
 const channels = {
-  morning: '1100414447908032553',
-  night: '1100414447908032553'
+  morning: '858900068203364404',
+  night: '858900068203364404'
 };
 
 const greeting = [
